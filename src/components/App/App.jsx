@@ -5,18 +5,18 @@ import { ToastContainer } from 'react-toastify';
 
 import { refreshUser } from 'redux/auth/authApi';
 
+import HomePage from 'pages/HomePage/HomePage';
 import RegisterPage from 'pages/RegisterPage/RegisterPage';
 import LoginPage from 'pages/LoginPage/LoginPage';
 import { PhonebookPageRTK } from 'pages/PhonebookPage_RTK';
 import { PhonebookPageThunk } from 'pages/PhonebookPage_thunk';
 
 import { Layout } from 'components/Layout';
-import 'react-toastify/dist/ReactToastify.css';
 import { RestrictedRoute } from 'components/RestrictedRoute';
 import { PrivateRoute } from 'components/PrivateRoute';
 import { selectIsRefreshing } from 'redux/selectors';
 import { Spinner } from 'components/Spinner';
-import HomePage from 'pages/HomePage/HomePage';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
   const dispatch = useDispatch();
