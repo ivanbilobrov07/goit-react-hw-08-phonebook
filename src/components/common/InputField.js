@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StyledTextField = styled(TextField)`
   & .MuiInputBase-input {
-    color: #fff;
+    color: #ffffff;
     transition: color 250ms ease-in;
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
