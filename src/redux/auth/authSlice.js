@@ -12,11 +12,11 @@ const handleRefreshUserPending = state => {
   state.isRefreshing = true;
 };
 
-const handleRejected = (state, { payload }) => {
-  state.isLoading = false;
+// const handleRejected = (state, { payload }) => {
+//   state.isLoading = false;
 
-  console.log(payload);
-};
+//   console.log(payload);
+// };
 
 const handleRefreshUserRejected = (state, { payload }) => {
   state.isRefreshing = false;
