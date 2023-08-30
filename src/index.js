@@ -15,15 +15,15 @@ import './index.css';
 axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter basename="goit-react-hw-08-phonebook">
-        <PersistGate loading={null} persistor={persistor}>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </PersistGate>
-      </BrowserRouter>
-    </ThemeProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <BrowserRouter basename="goit-react-hw-08-phonebook">
+      <PersistGate loading={null} persistor={persistor}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </PersistGate>
+    </BrowserRouter>
+  </ThemeProvider>
+  // </React.StrictMode>
 );

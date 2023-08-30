@@ -4,7 +4,12 @@ import { Message } from 'components/Message';
 import { ContactItem } from 'components/ContactItemThunk';
 import { StyledList, StyledItem, MessageWrapper } from './ContactList.styled';
 
-import { selectFilterByOption, selectFilteredContacts } from 'redux/selectors';
+import {
+  selectFilterByOption,
+  selectFilteredContacts,
+  selectIsLoading,
+} from 'redux/selectors';
+import { Spinner } from 'components/Spinner';
 
 const findUsedLetters = data => {
   const arrOfLetters = [];
@@ -26,6 +31,7 @@ const findUsedLetters = data => {
 export const ContactList = ({ chooseContact }) => {
   const filteredContacts = useSelector(selectFilteredContacts);
   const option = useSelector(selectFilterByOption);
+  const isLoading = useSelector(selectIsLoading);
   const usedLetters = findUsedLetters(filteredContacts);
 
   const generateLetter = item => {
@@ -42,25 +48,33 @@ export const ContactList = ({ chooseContact }) => {
     return letterToGenerate;
   };
 
-  return (
-    <>
-      {filteredContacts.length ? (
-        <StyledList>
-          {filteredContacts.map(item => (
-            <StyledItem
-              generateLetter={generateLetter(item)}
-              onClick={() => chooseContact(item)}
-              key={item.id}
-            >
-              <ContactItem {...item} />
-            </StyledItem>
-          ))}
-        </StyledList>
-      ) : (
-        <MessageWrapper>
-          <Message text="There are no contacts here" />
-        </MessageWrapper>
-      )}
-    </>
-  );
+  if (isLoading) {
+    return (
+      <MessageWrapper>
+        <Spinner />
+      </MessageWrapper>
+    );
+  } else {
+    return (
+      <>
+        {filteredContacts.length ? (
+          <StyledList>
+            {filteredContacts.map(item => (
+              <StyledItem
+                generateLetter={generateLetter(item)}
+                onClick={() => chooseContact(item)}
+                key={item.id}
+              >
+                <ContactItem {...item} />
+              </StyledItem>
+            ))}
+          </StyledList>
+        ) : (
+          <MessageWrapper>
+            <Message text="There are no contacts here" />
+          </MessageWrapper>
+        )}
+      </>
+    );
+  }
 };

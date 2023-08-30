@@ -1,24 +1,17 @@
 import { useState } from 'react';
 
-import {
-  useAddContactMutation,
-  useGetContactsQuery,
-} from 'redux/contacts/contactsApiRTK';
+import { useAddContactMutation } from 'redux/contacts/contactsApiRTK';
 import { errorNotify, successNotify } from 'utils';
 
 import { ContactForm } from 'components/ContactFormRTK';
 import { ContactList } from 'components/ContactListRTK';
 import { Controlls } from 'components/Controlls';
 import { FormModal } from 'components/FormModal';
-import { Message } from 'components/Message';
-import { Modal } from 'components/Modal';
-import { Spinner } from 'components/Spinner';
 import { ContentWrapper } from './Phonebook.styled';
 import { ContactCard } from 'components/ContactCardRTK';
 
 export const Phonebook = () => {
   const [addContact] = useAddContactMutation();
-  const { isLoading, isError: isErrorInGetting } = useGetContactsQuery();
 
   const [contactCardData, setContactCardData] = useState(null);
   const [isModalShown, setIsModalShown] = useState(false);
@@ -39,10 +32,6 @@ export const Phonebook = () => {
     setIsModalShown(state => !state);
   };
 
-  if (isErrorInGetting) {
-    return <Message text={'Something went wrong, try to use it later'} />;
-  }
-
   return (
     <div style={{ flexGrow: 1 }}>
       <Controlls toggleModal={toggleModal} />
@@ -50,11 +39,6 @@ export const Phonebook = () => {
         <FormModal onClose={toggleModal}>
           <ContactForm handleContactChange={handleAddContact} />
         </FormModal>
-      )}
-      {isLoading && (
-        <Modal>
-          <Spinner position="center" />
-        </Modal>
       )}
       <ContentWrapper>
         <ContactList chooseContact={setContactCardData} />

@@ -4,6 +4,9 @@ import { selectFilterByOption, selectFilterByQuery } from 'redux/selectors';
 import { MessageWrapper, StyledItem, StyledList } from './ContactList.styled';
 import { ContactItem } from 'components/ContactItemRTK';
 import { Message } from 'components/Message';
+import { Spinner } from 'components/Spinner';
+import { useEffect } from 'react';
+import { errorNotify } from 'utils';
 
 const findUsedLetters = data => {
   const arrOfLetters = [];
@@ -23,12 +26,24 @@ const findUsedLetters = data => {
 };
 
 export const ContactList = ({ chooseContact }) => {
-  const { data: contacts, isFetching } = useGetContactsQuery(undefined, {
+  const data = useGetContactsQuery();
+  console.log(data);
+  const {
+    data: contacts,
+    isFetching,
+    isError,
+  } = useGetContactsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
   const option = useSelector(selectFilterByOption);
   const query = useSelector(selectFilterByQuery);
   const usedLetters = findUsedLetters(contacts);
+
+  useEffect(() => {
+    if (isError) {
+      errorNotify('We can`t load your contacts, try again laters');
+    }
+  }, [isError]);
 
   const getFilteredContacts = data => {
     let filteredContacts = [...data];
@@ -70,27 +85,34 @@ export const ContactList = ({ chooseContact }) => {
 
   const filteredContacts = contacts && getFilteredContacts(contacts);
 
-  return (
-    <>
-      {filteredContacts?.length ? (
-        <StyledList>
-          {filteredContacts.map(item => (
-            <StyledItem
-              generateLetter={generateLetter(item)}
-              onClick={() => chooseContact(item)}
-              key={item.id}
-            >
-              <ContactItem {...item} />
-            </StyledItem>
-          ))}
-        </StyledList>
-      ) : (
-        !isFetching && (
+  if (isFetching) {
+    return (
+      <MessageWrapper>
+        <Spinner position="center" />
+      </MessageWrapper>
+    );
+  } else {
+    return (
+      <>
+        {isError && errorNotify()}
+        {filteredContacts?.length ? (
+          <StyledList>
+            {filteredContacts.map(item => (
+              <StyledItem
+                generateLetter={generateLetter(item)}
+                onClick={() => chooseContact(item)}
+                key={item.id}
+              >
+                <ContactItem {...item} />
+              </StyledItem>
+            ))}
+          </StyledList>
+        ) : (
           <MessageWrapper>
             <Message text="There are no contacts here" />
           </MessageWrapper>
-        )
-      )}
-    </>
-  );
+        )}
+      </>
+    );
+  }
 };

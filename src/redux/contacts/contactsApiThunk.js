@@ -6,11 +6,13 @@ export const getContacts = createAsyncThunk(
   'contacts/getContacts',
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/contacts');
+      const response = await axios.get('/contacts', {
+        signal: thunkAPI.signal,
+      });
       return response.data;
-    } catch (_) {
+    } catch (e) {
       return thunkAPI.rejectWithValue(
-        'We can`t load your contacts, try again later '
+        'We can`t load your contacts, try again later'
       );
     }
   }

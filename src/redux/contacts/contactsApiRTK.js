@@ -3,9 +3,15 @@ import axios from 'axios';
 
 const axiosBaseQuery =
   ({ baseUrl } = { baseUrl: '' }) =>
-  async ({ url, method, data, params }) => {
+  async ({ url, method, data, params, signal }) => {
     try {
-      const result = await axios({ url: baseUrl + url, method, data, params });
+      const result = await axios({
+        url: baseUrl + url,
+        method,
+        data,
+        params,
+        signal,
+      });
       return { data: result.data };
     } catch (axiosError) {
       let err = axiosError;
