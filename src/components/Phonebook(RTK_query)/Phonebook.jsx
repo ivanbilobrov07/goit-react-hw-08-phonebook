@@ -13,11 +13,14 @@ import { FormModal } from 'components/FormModal';
 import { Message } from 'components/Message';
 import { Modal } from 'components/Modal';
 import { Spinner } from 'components/Spinner';
+import { ContentWrapper } from './Phonebook.styled';
+import { ContactCard } from 'components/ContactCardRTK';
 
 export const Phonebook = () => {
   const [addContact] = useAddContactMutation();
   const { isLoading, isError: isErrorInGetting } = useGetContactsQuery();
 
+  const [contactCardData, setContactCardData] = useState(null);
   const [isModalShown, setIsModalShown] = useState(false);
 
   const handleAddContact = async data => {
@@ -41,22 +44,27 @@ export const Phonebook = () => {
   }
 
   return (
-    <>
+    <div style={{ flexGrow: 1 }}>
       <Controlls toggleModal={toggleModal} />
-
       {isModalShown && (
         <FormModal onClose={toggleModal}>
           <ContactForm handleContactChange={handleAddContact} />
         </FormModal>
       )}
-
       {isLoading && (
         <Modal>
           <Spinner position="center" />
         </Modal>
       )}
-
-      <ContactList />
-    </>
+      <ContentWrapper>
+        <ContactList chooseContact={setContactCardData} />
+        {contactCardData && (
+          <ContactCard
+            chooseContact={setContactCardData}
+            data={contactCardData}
+          />
+        )}
+      </ContentWrapper>
+    </div>
   );
 };

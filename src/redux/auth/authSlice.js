@@ -2,6 +2,7 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { initialState } from './authIhInitialState';
 import { login, logout, refreshUser, register } from './authApi';
+import { errorNotify, successNotify } from 'utils';
 
 const handlePending = state => {
   state.isLoading = true;
@@ -12,37 +13,36 @@ const handleRefreshUserPending = state => {
   state.isRefreshing = true;
 };
 
-// const handleRejected = (state, { payload }) => {
-//   state.isLoading = false;
+const handleRejected = (state, { payload }) => {
+  state.isLoading = false;
+  errorNotify(payload);
+};
 
-//   console.log(payload);
-// };
-
-const handleRefreshUserRejected = (state, { payload }) => {
+const handleRefreshUserRejected = state => {
   state.isRefreshing = false;
 };
 
-const handleRegisterFullfield = (state, { payload }) => {
+const handleRegOrLoginFullfield = (state, payload) => {
   state.user = payload.user;
   state.isLoggedIn = true;
   state.token = payload.token;
   state.isLoading = false;
-  state.error = '';
+};
+
+const handleRegisterFullfield = (state, { payload }) => {
+  handleRegOrLoginFullfield(state, payload);
+  successNotify('You have successfully registered');
 };
 
 const handleLoginFullfield = (state, { payload }) => {
-  state.user = payload.user;
-  state.isLoggedIn = true;
-  state.token = payload.token;
-  state.isLoading = false;
-  state.error = '';
+  handleRegOrLoginFullfield(state, payload);
+  successNotify('You have successfully logged in');
 };
 
 const handleRefreshUserFullfield = (state, { payload }) => {
   state.user = payload;
   state.isLoggedIn = true;
   state.isRefreshing = false;
-  state.error = '';
 };
 
 const handleLogoutFullfield = state => {
@@ -50,7 +50,7 @@ const handleLogoutFullfield = state => {
   state.token = null;
   state.isLoggedIn = false;
   state.isLoading = false;
-  state.error = '';
+  successNotify('See you later');
 };
 
 export const authSlice = createSlice({
@@ -63,12 +63,16 @@ export const authSlice = createSlice({
       .addCase(register.fulfilled, handleRegisterFullfield)
       .addCase(login.fulfilled, handleLoginFullfield)
       .addCase(refreshUser.fulfilled, handleRefreshUserFullfield)
-      .addCase(refreshUser.rejected, handleRefreshUserRejected)
       .addCase(logout.fulfilled, handleLogoutFullfield)
       .addCase(refreshUser.pending, handleRefreshUserPending)
+      .addCase(refreshUser.rejected, handleRefreshUserRejected)
       .addMatcher(
         isAnyOf(register.pending, login.pending, logout.pending),
         handlePending
+      )
+      .addMatcher(
+        isAnyOf(register.rejected, login.rejected, logout.rejected),
+        handleRejected
       );
   },
 });

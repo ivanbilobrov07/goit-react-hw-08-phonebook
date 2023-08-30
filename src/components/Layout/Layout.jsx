@@ -1,8 +1,11 @@
+import { Suspense } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { Outlet } from 'react-router-dom';
 
 import { Container } from 'components/Container.styled';
 import { AppBar } from 'components/AppBar';
-import { StyledHeader, StyledMain } from './Layout.styled';
+import { StyledHeader } from './Layout.styled';
+import { Spinner } from 'components/Spinner';
 
 export const Layout = () => {
   return (
@@ -12,9 +15,13 @@ export const Layout = () => {
           <AppBar />
         </Container>
       </StyledHeader>
-      <StyledMain>
-        <Outlet />
-      </StyledMain>
+      <main>
+        <Suspense fallback={<Spinner position="center" />}>
+          <Outlet />
+        </Suspense>
+      </main>
+
+      <ToastContainer />
     </>
   );
 };

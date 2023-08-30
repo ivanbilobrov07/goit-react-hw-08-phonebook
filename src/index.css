@@ -63,3 +63,13 @@ select {
   cursor: pointer;
   font: inherit;
 }
+
+address {
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Paciffico';
+  src: url('./fonts/Pacifico-Regular.ttf') format('ttf');
+  src: url('./fonts/Pacifico-Regular.woff2') format('woff2');
+}

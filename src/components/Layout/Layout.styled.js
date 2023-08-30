@@ -8,7 +8,3 @@ export const StyledHeader = styled.header`
   box-shadow: 0 5px 5px gray;
   background-color: rgb(238, 238, 238);
 `;
-
-export const StyledMain = styled.main`
-  padding: 100px 0;
-`;

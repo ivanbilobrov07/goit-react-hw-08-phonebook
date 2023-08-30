@@ -11,11 +11,17 @@ import { Modal } from 'components/Modal';
 import { FormModal } from 'components/FormModal';
 import { Spinner } from 'components/Spinner';
 import { ContactList } from 'components/ContactListThunk';
+import { ContactCard } from 'components/ContactCardThunk';
+import { ContentWrapper } from './Phonebook.styled';
 
 export const Phonebook = () => {
   const [isModalShown, setIsModalShown] = useState(false);
+  const [contactCardData, setContactCardData] = useState(null);
+
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
+
+  console.log(isLoading);
 
   const dispatch = useDispatch();
 
@@ -39,7 +45,7 @@ export const Phonebook = () => {
   };
 
   return (
-    <>
+    <div style={{ flexGrow: 1 }}>
       <Controlls toggleModal={toggleModal} />
 
       {isModalShown && (
@@ -53,10 +59,16 @@ export const Phonebook = () => {
           <Spinner position="center" />
         </Modal>
       )}
-
       {error && errorNotify()}
-
-      <ContactList />
-    </>
+      <ContentWrapper>
+        <ContactList chooseContact={setContactCardData} />
+        {contactCardData && (
+          <ContactCard
+            chooseContact={setContactCardData}
+            data={contactCardData}
+          />
+        )}
+      </ContentWrapper>
+    </div>
   );
 };

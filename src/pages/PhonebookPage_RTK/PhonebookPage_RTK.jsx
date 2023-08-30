@@ -1,18 +1,21 @@
 import { Phonebook } from 'components/Phonebook(RTK_query)';
 import { Container } from 'components/Container.styled';
-import { Title, Wrapper } from 'pages/PhonebookPage.styled';
+import { UserCard } from 'components/UserCard';
+import { Section, Wrapper } from 'pages/PhonebookPage.styled';
 
-export const PhonebookPageRTK = () => {
+const PhonebookPageRTK = () => {
   return (
     <>
-      <section>
+      <Section>
         <Container>
           <Wrapper>
-            <Title>Phonebook</Title>
+            <UserCard />
             <Phonebook />
           </Wrapper>
         </Container>
-      </section>
+      </Section>
     </>
   );
 };
+
+export default PhonebookPageRTK;

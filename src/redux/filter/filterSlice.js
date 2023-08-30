@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   query: '',
-  option: 'without',
+  option: 'ascending',
 };
 
 const filterSlice = createSlice({

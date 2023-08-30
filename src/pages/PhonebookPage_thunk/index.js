@@ -1,1 +1,1 @@
-export * from './PhonebookPageThunk';
+export { default } from './PhonebookPageThunk';

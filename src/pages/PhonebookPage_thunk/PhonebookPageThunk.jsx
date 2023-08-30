@@ -1,18 +1,21 @@
 import { Phonebook } from 'components/Phonekook(create_async_thunk)';
 import { Container } from 'components/Container.styled';
-import { Title, Wrapper } from 'pages/PhonebookPage.styled';
+import { UserCard } from 'components/UserCard';
+import { Section, Wrapper } from 'pages/PhonebookPage.styled';
 
-export const PhonebookPageThunk = () => {
+const PhonebookPageThunk = () => {
   return (
     <>
-      <section>
+      <Section>
         <Container>
           <Wrapper>
-            <Title>Phonebook</Title>
+            <UserCard />
             <Phonebook />
           </Wrapper>
         </Container>
-      </section>
+      </Section>
     </>
   );
 };
+
+export default PhonebookPageThunk;

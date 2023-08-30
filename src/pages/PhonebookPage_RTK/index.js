@@ -1,1 +1,1 @@
-export * from './PhonebookPage_RTK';
+export { default } from './PhonebookPage_RTK';

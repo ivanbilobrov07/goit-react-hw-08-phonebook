@@ -18,7 +18,11 @@ export const register = createAsyncThunk(
       setAuthHeader(response.data.token);
       return response.data;
     } catch (e) {
-      //TODO
+      return thunkAPI.rejectWithValue(
+        e.response.status === 400
+          ? 'This email is already taken'
+          : 'Something went wrong, please try again'
+      );
     }
   }
 );
@@ -32,7 +36,11 @@ export const login = createAsyncThunk(
       setAuthHeader(response.data.token);
       return response.data;
     } catch (e) {
-      //TODO
+      return thunkAPI.rejectWithValue(
+        e.response.status === 400
+          ? 'Incorrect password or email field'
+          : 'Something went wrong, please try again'
+      );
     }
   }
 );
@@ -54,7 +62,6 @@ export const refreshUser = createAsyncThunk(
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue('Unable to refetch the user');
-      //TODO
     }
   }
 );
@@ -63,5 +70,7 @@ export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     await axios.post('/users/logout');
     clearAuthHeader();
-  } catch (e) {}
+  } catch (e) {
+    return thunkAPI.rejectWithValue('Something went wrong, please try again');
+  }
 });

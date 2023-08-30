@@ -1,9 +1,14 @@
 export const theme = {
   colors: {
-    blueBackground: '#b8edff',
-    blueText: '#00bfff',
     success: '#00C851',
     error: '#ff4444',
+    warning: '#FFB422',
+
+    successOpacity: '#89F2A6',
+    warningOpacity: '#F2E189',
+
+    blueBackground: '#b8edff',
+    blueText: '#00bfff',
     tableBackground: '#eee',
     tableBorder: '#C0C0C0',
     textLight: '#fafafa',
@@ -12,5 +17,7 @@ export const theme = {
     accentColor: '#8baa36',
     white: '#ffffff',
     labelColor: 'rgba(250, 250, 250, 0.8)',
+    registrationPageBackground: '#5FC3CA',
+    homePageBackground: '#A68BFF',
   },
 };

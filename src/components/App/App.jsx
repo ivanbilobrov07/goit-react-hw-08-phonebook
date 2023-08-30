@@ -1,15 +1,9 @@
+import { lazy } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 
 import { refreshUser } from 'redux/auth/authApi';
-
-import HomePage from 'pages/HomePage/HomePage';
-import RegisterPage from 'pages/RegisterPage/RegisterPage';
-import LoginPage from 'pages/LoginPage/LoginPage';
-import { PhonebookPageRTK } from 'pages/PhonebookPage_RTK';
-import { PhonebookPageThunk } from 'pages/PhonebookPage_thunk';
 
 import { Layout } from 'components/Layout';
 import { RestrictedRoute } from 'components/RestrictedRoute';
@@ -17,6 +11,12 @@ import { PrivateRoute } from 'components/PrivateRoute';
 import { selectIsRefreshing } from 'redux/selectors';
 import { Spinner } from 'components/Spinner';
 import 'react-toastify/dist/ReactToastify.css';
+
+const HomePage = lazy(() => import('pages/HomePage'));
+const RegisterPage = lazy(() => import('pages/RegisterPage'));
+const LoginPage = lazy(() => import('pages/LoginPage'));
+const PhonebookPageRTK = lazy(() => import('pages/PhonebookPage_RTK'));
+const PhonebookPageThunk = lazy(() => import('pages/PhonebookPage_thunk'));
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -61,8 +61,6 @@ export const App = () => {
           </Route>
         </Routes>
       )}
-
-      <ToastContainer />
     </>
   );
 };

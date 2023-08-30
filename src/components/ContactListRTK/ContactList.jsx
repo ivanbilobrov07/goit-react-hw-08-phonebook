@@ -1,22 +1,34 @@
 import { useGetContactsQuery } from 'redux/contacts/contactsApiRTK';
 import { useSelector } from 'react-redux';
 import { selectFilterByOption, selectFilterByQuery } from 'redux/selectors';
-
-import {
-  Table,
-  TableRow,
-  TableTitleCell,
-  TableHeader,
-} from './ContactList.styled';
+import { MessageWrapper, StyledItem, StyledList } from './ContactList.styled';
 import { ContactItem } from 'components/ContactItemRTK';
 import { Message } from 'components/Message';
 
-export const ContactList = () => {
+const findUsedLetters = data => {
+  const arrOfLetters = [];
+
+  if (!data) return null;
+
+  for (const item of data) {
+    const letter = item.name.toUpperCase()[0];
+    if (arrOfLetters.includes(letter)) {
+      continue;
+    }
+
+    arrOfLetters.push(letter);
+  }
+
+  return arrOfLetters.map(item => ({ letter: item, isUsed: false }));
+};
+
+export const ContactList = ({ chooseContact }) => {
   const { data: contacts, isFetching } = useGetContactsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
   const option = useSelector(selectFilterByOption);
   const query = useSelector(selectFilterByQuery);
+  const usedLetters = findUsedLetters(contacts);
 
   const getFilteredContacts = data => {
     let filteredContacts = [...data];
@@ -42,30 +54,42 @@ export const ContactList = () => {
     );
   };
 
+  const generateLetter = item => {
+    if (option !== 'ascending' && option !== 'descending') {
+      return null;
+    }
+
+    const letterToGenerate = item.name.toUpperCase()[0];
+    const letterOptions = usedLetters.find(i => i.letter === letterToGenerate);
+
+    if (letterOptions.isUsed) return null;
+
+    letterOptions.isUsed = true;
+    return letterToGenerate;
+  };
+
   const filteredContacts = contacts && getFilteredContacts(contacts);
 
   return (
     <>
       {filteredContacts?.length ? (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <th>Names</th>
-              <th>Phone Number</th>
-              <TableTitleCell>Edit</TableTitleCell>
-              <TableTitleCell>Delete</TableTitleCell>
-            </TableRow>
-          </TableHeader>
-          <tbody>
-            {filteredContacts.map(item => (
-              <TableRow key={item.id}>
-                <ContactItem {...item} />
-              </TableRow>
-            ))}
-          </tbody>
-        </Table>
+        <StyledList>
+          {filteredContacts.map(item => (
+            <StyledItem
+              generateLetter={generateLetter(item)}
+              onClick={() => chooseContact(item)}
+              key={item.id}
+            >
+              <ContactItem {...item} />
+            </StyledItem>
+          ))}
+        </StyledList>
       ) : (
-        !isFetching && <Message text="There are no contacts here" />
+        !isFetching && (
+          <MessageWrapper>
+            <Message text="There are no contacts here" />
+          </MessageWrapper>
+        )
       )}
     </>
   );
